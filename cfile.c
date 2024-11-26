@@ -5,12 +5,10 @@
 extern void compute_accelerations(int num_cars, double* input_matrix, int* output_results);
 
 int main() {
-    int num_cars;
-    int i;
-    //printf("Enter the number of cars: ");
-    scanf("%d", &num_cars);
+    int num_cars = 1000;
+    int num_runs = 30;
+    int i, j;
 
-    // Allocate memory for the input matrix and output results
     double* input_matrix = (double*)malloc(num_cars * 3 * sizeof(double));
     int* output_results = (int*)malloc(num_cars * sizeof(int));
 
@@ -19,29 +17,33 @@ int main() {
         return 1;
     }
 
-    // Input data for each car
-    //printf("Enter the matrix values (Initial Velocity, Final Velocity, Time):\n");
     for (i = 0; i < num_cars; i++) {
-        //printf("Car %d: ", i + 1);
-        scanf("%lf,%lf,%lf", &input_matrix[i * 3], &input_matrix[i * 3 + 1], &input_matrix[i * 3 + 2]);
+        input_matrix[i * 3] = 30.0;
+        input_matrix[i * 3 + 1] = 160.7;
+        input_matrix[i * 3 + 2] = 7.8;
     }
 
-    clock_t start = clock();
-    compute_accelerations(num_cars, input_matrix, output_results);
-    clock_t end = clock();
+    double total_time = 0.0;
+
+    for (j = 0; j < num_runs; j++) {
+        clock_t start = clock();
+        compute_accelerations(num_cars, input_matrix, output_results);
+        clock_t end = clock();
+        total_time += (double)(end - start) / CLOCKS_PER_SEC;
+    }
+
+    double average_time = total_time / num_runs;
 
     printf("Accelerations (m/s^2):\n");
     for (i = 0; i < num_cars; i++) {
-        if (output_results[i] == -1) { // Sentinel value for overflow
+        if (output_results[i] == -1) {
             printf("Car %d: Overflow detected\n", i + 1);
         } else {
-            //printf("Car %d: %d\n", i + 1, output_results[i]);
-            printf("%d\n", output_results[i]);
+            printf("Car %d: %d\n", i + 1, output_results[i]);
         }
     }
 
-    double time_spent = (double)(end - start) / CLOCKS_PER_SEC;
-    printf("Execution time: %.5f seconds\n", time_spent);
+    printf("Average execution time: %.5f seconds\n", average_time);
 
     free(input_matrix);
     free(output_results);
