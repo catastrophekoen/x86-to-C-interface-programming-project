@@ -35,12 +35,8 @@ int main() {
     // Display results
     printf("Accelerations (m/s^2):\n");
     for (i = 0; i < num_cars; i++) {
-        if (output_results[i] == -1) { // Sentinel value for overflow
-            printf("Car %d: Overflow detected\n", i + 1);
-        } else {
             //printf("Car %d: %d\n", i + 1, output_results[i]);
             printf("%d\n", output_results[i]);
-        }
     }
 
     // Display execution time

@@ -42,11 +42,6 @@ compute_loop:
     ; Round up result to nearest integer
     roundsd xmm1, xmm1, 0      
 
-    ; Detect overflow
-    movq rax, xmm1              ; Copy result to rax
-    test rax, rax               ; Check if result is valid
-    js compute_overflow         ; If negative, handle overflow
-
     ; Convert to integer and store in output_results
     cvttsd2si eax, xmm1         ; eax = (int) xmm1
     mov dword [r8 + rbx * 4], eax
