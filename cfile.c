@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <time.h>
 
 // Assembly function prototype
 extern void compute_accelerations(int num_cars, double* input_matrix, int* output_results);
@@ -28,9 +27,7 @@ int main() {
     }
 
     // Call the assembly function
-    clock_t start = clock();
     compute_accelerations(num_cars, input_matrix, output_results);
-    clock_t end = clock();
 
     // Display results
     printf("Accelerations (m/s^2):\n");
@@ -38,10 +35,6 @@ int main() {
             //printf("Car %d: %d\n", i + 1, output_results[i]);
             printf("%d\n", output_results[i]);
     }
-
-    // Display execution time
-    double time_spent = (double)(end - start) / CLOCKS_PER_SEC;
-    printf("Execution time: %.6f seconds\n", time_spent);
 
     // Free allocated memory
     free(input_matrix);
