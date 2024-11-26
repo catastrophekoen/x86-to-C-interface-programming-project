@@ -7,7 +7,7 @@ extern void compute_accelerations(int num_cars, double* input_matrix, int* outpu
 int main() {
     int num_cars;
     int i;
-    printf("Enter the number of cars: ");
+    //printf("Enter the number of cars: ");
     scanf("%d", &num_cars);
 
     // Allocate memory for the input matrix and output results
@@ -20,9 +20,9 @@ int main() {
     }
 
     // Input data for each car
-    printf("Enter the matrix values (Initial Velocity, Final Velocity, Time):\n");
+    //printf("Enter the matrix values (Initial Velocity, Final Velocity, Time):\n");
     for (i = 0; i < num_cars; i++) {
-        printf("Car %d: ", i + 1);
+        //printf("Car %d: ", i + 1);
         scanf("%lf,%lf,%lf", &input_matrix[i * 3], &input_matrix[i * 3 + 1], &input_matrix[i * 3 + 2]);
     }
 
@@ -35,7 +35,8 @@ int main() {
         if (output_results[i] == -1) { // Sentinel value for overflow
             printf("Car %d: Overflow detected\n", i + 1);
         } else {
-            printf("Car %d: %d\n", i + 1, output_results[i]);
+            //printf("Car %d: %d\n", i + 1, output_results[i]);
+            printf("%d\n", output_results[i]);
         }
     }
 

@@ -2,14 +2,10 @@ section .data
     one_k dq 1000.0              ; Constant for 1000.0
     one_s dq 3600.0              ; Constant for 3600.0
 
-section .bss
-    ; Removed 'i' since the loop counter will reside in a register
-
 section .text
     global compute_accelerations
 
 compute_accelerations:
-    ; Function parameters:
     ; RCX: num_cars
     ; RDX: input_matrix
     ; R8:  output_results
@@ -43,10 +39,10 @@ compute_loop:
     subsd xmm1, xmm0            ; xmm1 = Vf - Vi
     divsd xmm1, xmm2            ; xmm1 = (Vf - Vi) / T
 
-    ; Round result to nearest integer
-    roundsd xmm1, xmm1, 0       ; Round to nearest (ties to even)
+    ; Round up result to nearest integer
+    roundsd xmm1, xmm1, 0      
 
-    ; Detect overflow (optional: limit the output to a defined range)
+    ; Detect overflow
     movq rax, xmm1              ; Copy result to rax
     test rax, rax               ; Check if result is valid
     js compute_overflow         ; If negative, handle overflow
@@ -55,7 +51,6 @@ compute_loop:
     cvttsd2si eax, xmm1         ; eax = (int) xmm1
     mov dword [r8 + rbx * 4], eax
 
-    ; Increment loop counter
     inc rbx
     jmp compute_loop
 
