@@ -1,16 +1,17 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <time.h>
+#include <windows.h>
 
+// Declare the external assembly function
 extern void compute_accelerations(int num_cars, double* input_matrix, int* output_results);
 
 int main() {
-    int num_cars = 10000; //can change this into 10,100,1000 
+    int num_cars = 10000; // Can change this to 10, 100, 1000, etc.
     int num_runs = 30;
     int i, j;
 
-    double* input_matrix = (double)malloc(num_cars 3 * sizeof(double));
-    int* output_results = (int)malloc(num_cars sizeof(int));
+    double* input_matrix = (double*)malloc(num_cars * 3 * sizeof(double));
+    int* output_results = (int*)malloc(num_cars * sizeof(int));
 
     if (!input_matrix || !output_results) {
         printf("Memory allocation failed.\n");
@@ -19,22 +20,25 @@ int main() {
 
     // Initialize input_matrix with sample values
     for (i = 0; i < num_cars; i++) {
-        input_matrix[i * 3] = 30.0;
-        input_matrix[i * 3 + 1] = 160.7;
-        input_matrix[i * 3 + 2] = 7.8;
+        input_matrix[i * 3] = 30.0;      // Initial velocity (km/h)
+        input_matrix[i * 3 + 1] = 160.7; // Final velocity (km/h)
+        input_matrix[i * 3 + 2] = 7.8;   // Time (seconds)
     }
 
     double total_time = 0.0;
 
-    // Output the size of input_matrix
     printf("Input size (num_cars): %d\n", num_cars);
+
+    LARGE_INTEGER frequency, start, end;
+    QueryPerformanceFrequency(&frequency); 
 
     // Run the acceleration computation multiple times to average execution time
     for (j = 0; j < num_runs; j++) {
-        clock_t start = clock();
+        QueryPerformanceCounter(&start); // Start timer
         compute_accelerations(num_cars, input_matrix, output_results);
-        clock_t end = clock();
-        double run_time = (double)(end - start) / CLOCKS_PER_SEC;
+        QueryPerformanceCounter(&end);   // End timer
+
+        double run_time = (double)(end.QuadPart - start.QuadPart) / frequency.QuadPart;
         total_time += run_time;
 
         // Output the time for each individual run
