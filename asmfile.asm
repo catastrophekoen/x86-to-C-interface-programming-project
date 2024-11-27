@@ -6,10 +6,6 @@ section .text
     global compute_accelerations
 
 compute_accelerations:
-    ; RCX: num_cars
-    ; RDX: input_matrix
-    ; R8:  output_results
-
     xor rbx, rbx                ; Initialize loop counter (rbx = 0)
 
 compute_loop:
@@ -46,11 +42,6 @@ compute_loop:
     cvttsd2si eax, xmm1         ; eax = (int) xmm1
     mov dword [r8 + rbx * 4], eax
 
-    inc rbx
-    jmp compute_loop
-
-compute_overflow:
-    mov dword [r8 + rbx * 4], 0xFFFFFFFF ; Store a sentinel value for overflow
     inc rbx
     jmp compute_loop
 
